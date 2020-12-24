@@ -5,7 +5,7 @@ import config
 #https://discordpy.readthedocs.io/en/latest/api.html
 
 TOKEN = config.DISCORD_TOKEN
-client.close()
+#client.close()
 client = discord.Client()
 
 
