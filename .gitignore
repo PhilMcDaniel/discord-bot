@@ -127,7 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.jscode/
+.vscode/
 env/
 venv/
 config.py
+
