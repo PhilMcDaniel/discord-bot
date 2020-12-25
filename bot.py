@@ -24,7 +24,7 @@ async def on_message(message):
     
 # simple if statements looking for specific text in messages
     if message.content == '!movies':
-        await message.channel.send(config.MOVIES_LINK)
+        await message.channel.send(f"{config.MOVIE_SHEET}\n\n{config.MOVIE_CALENDAR}")
     if message.content == '!erotica':
         await message.channel.send(f'Here you go, {message.author} - https://www.reddit.com/r/Erotica/')
     if 'happy birthday' in message.content.lower():
