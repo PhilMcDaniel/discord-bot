@@ -16,6 +16,7 @@ async def on_ready():
     print(f'{client.user} has connected to Discord!')
 
 
+
 @client.event
 async def on_message(message):
     # make sure the bot doesn't reply to itself
@@ -24,7 +25,14 @@ async def on_message(message):
     
 # simple if statements looking for specific text in messages
     if message.content == '!movies':
-        await message.channel.send(f"{config.MOVIE_SHEET}\n\n{config.MOVIE_CALENDAR}")
+        #format the sheet embed
+        sheet=discord.Embed(title="Movies Google Sheet", url=config.MOVIE_SHEET, description="Shared Google Sheet where we pick movies/shows to watch together.", color=0xFF5733)
+        sheet.set_thumbnail(url="https://i.imgur.com/0hQyd5L.gif")
+        await message.channel.send(embed = sheet)
+        #format the calendar embed
+        cal=discord.Embed(title="Movies Google Calendar", url=config.MOVIE_CALENDAR, description="Shared Google Calendar used to keep track of when we are watching movies/shows.", color=0xFF5733)
+        cal.set_thumbnail(url="https://i.pinimg.com/originals/63/be/5f/63be5f30749ff7be7bb4a633ffac763f.gif")
+        await message.channel.send(embed = cal)
     if message.content == '!erotica':
         await message.channel.send(f'Here you go, {message.author} - https://www.reddit.com/r/Erotica/')
     if 'happy birthday' in message.content.lower():
@@ -33,5 +41,13 @@ async def on_message(message):
         await message.channel.send('Merry Christmas! 🎄🎅')
     if message.content == '!shrug':
         await message.channel.send('¯\_(ツ)_/¯')
+
+
+
+
+
 client.run(TOKEN)
 #client.close()
+
+#[Movie Sheet]({config.MOVIE_SHEET})
+#[Movie Calendar]({config.MOVIE_CALENDAR})
