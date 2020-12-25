@@ -29,6 +29,8 @@ async def on_message(message):
         await message.channel.send(f'Here you go, {message.author} - https://www.reddit.com/r/Erotica/')
     if 'happy birthday' in message.content.lower():
         await message.channel.send('Happy Birthday! 🎈🎉')
+    if 'merry christmas' in message.content.lower():
+        await message.channel.send('Merry Christmas! 🎄🎅')
     if message.content == '!shrug':
         await message.channel.send('¯\_(ツ)_/¯')
 client.run(TOKEN)
