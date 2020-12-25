@@ -1,6 +1,7 @@
 import discord
 import config
-
+from datetime import datetime
+import random
 
 #https://discord.com/developers/applications
 #https://discordpy.readthedocs.io/en/latest/api.html
@@ -41,6 +42,12 @@ async def on_message(message):
         await message.channel.send('Merry Christmas! 🎄🎅')
     if message.content == '!shrug':
         await message.channel.send('¯\_(ツ)_/¯')
+    
+    # reactions
+    # if date is christmas, reply to every message with :santa:
+    if (datetime.now().month == 12 and datetime.now().day == 25):
+        emote = ['🎅','🎄','🎁','❄️','🤶','🧝','🌟','☃️','⛄','🔥','🔔','🎶','🕯️','🦌']
+        await message.add_reaction(random.choice(emote))
 
 
 
@@ -48,6 +55,3 @@ async def on_message(message):
 
 client.run(TOKEN)
 #client.close()
-
-#[Movie Sheet]({config.MOVIE_SHEET})
-#[Movie Calendar]({config.MOVIE_CALENDAR})
