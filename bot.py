@@ -5,20 +5,23 @@ import config
 #https://discordpy.readthedocs.io/en/latest/api.html
 
 TOKEN = config.DISCORD_TOKEN
-#client.close()
+
+
 client = discord.Client()
 
 
 @client.event
-async def on_ready():
-    print(f'{client.user.name} has connected to Discord!')
+async def on_message(message):
+    # make sure the bot doesn't reply to itself
+    if message.author == client.user:
+        return
+    
 
-@client.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Hi {member.name}, welcome to my Discord server!'
-    )
-
+    if message.content == '!movies':
+        await message.channel.send(config.MOVIES_LINK)
+    if message.content == '!erotica':
+        await message.channel.send(f'Here you go, {message.author} - https://www.reddit.com/r/Erotica/')
+    if 'happy birthday' in message.content.lower():
+        await message.channel.send('Happy Birthday! 🎈🎉')
 client.run(TOKEN)
 #client.close()
