@@ -34,6 +34,10 @@ async def on_message(message):
         cal=discord.Embed(title="Movies Google Calendar", url=config.MOVIE_CALENDAR, description="Shared Google Calendar used to keep track of when we are watching movies/shows.", color=0xFF5733)
         cal.set_thumbnail(url="https://i.pinimg.com/originals/63/be/5f/63be5f30749ff7be7bb4a633ffac763f.gif")
         await message.channel.send(embed = cal)
+        #format the calendar embed
+        vote=discord.Embed(title="Movies Date Vote", url=config.MOVIE_VOTE, description="Vote for the next movie night date.", color=0xFF5733)
+        vote.set_thumbnail(url="https://media2.giphy.com/media/55m7McmQ9tcD26kQ3I/giphy.gif?cid=ecf05e47u8ah5z3t5v5w6b9dyv8fipeu1jrtf84an19zuehy&rid=giphy.gif")
+        await message.channel.send(embed = vote)
     if message.content == '!erotica':
         await message.channel.send(f'Here you go, {message.author} - https://www.reddit.com/r/Erotica/')
     if 'happy birthday' in message.content.lower():
