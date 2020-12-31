@@ -49,7 +49,7 @@ async def on_message(message):
     
     # reactions
     # if date is christmas, reply to every message with :santa:
-    if (datetime.now().month == 12 and datetime.now().day == 25):
+    if (datetime.now().month == 12):
         emote = ['🎅','🎄','🎁','❄️','🤶','🧝','🌟','☃️','⛄','🔥','🔔','🎶','🕯️','🦌']
         await message.add_reaction(random.choice(emote))
 
