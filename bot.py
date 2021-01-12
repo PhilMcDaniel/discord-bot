@@ -38,20 +38,24 @@ async def on_message(message):
         vote=discord.Embed(title="Movies Date Vote", url=config.MOVIE_VOTE, description="Vote for the next movie night date.", color=0xFF5733)
         vote.set_thumbnail(url="https://media2.giphy.com/media/55m7McmQ9tcD26kQ3I/giphy.gif?cid=ecf05e47u8ah5z3t5v5w6b9dyv8fipeu1jrtf84an19zuehy&rid=giphy.gif")
         await message.channel.send(embed = vote)
-    if message.content == '!erotica':
-        await message.channel.send(f'Here you go, {message.author} - https://www.reddit.com/r/Erotica/')
+
     if 'happy birthday' in message.content.lower():
         await message.channel.send('Happy Birthday! 🎈🎉')
     if 'merry christmas' in message.content.lower():
         await message.channel.send('Merry Christmas! 🎄🎅')
     if message.content == '!shrug':
         await message.channel.send('¯\_(ツ)_/¯')
-    
+
+
+
     # reactions
     # if date is christmas, reply to every message with :santa:
     if (datetime.now().month == 12):
         emote = ['🎅','🎄','🎁','❄️','🤶','🧝','🌟','☃️','⛄','🔥','🔔','🎶','🕯️','🦌']
         await message.add_reaction(random.choice(emote))
+    #poop
+    if 'poo' in message.content.lower() or 'shit' in message.content.lower() or 'dump' in message.content.lower():
+        await message.add_reaction('💩')
 
 
 
