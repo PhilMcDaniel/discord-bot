@@ -1,3 +1,4 @@
+#!/usr/bin/python3.7
 import discord
 import config
 from datetime import datetime
@@ -17,7 +18,6 @@ async def on_ready():
     print(f'{client.user} has connected to Discord!')
 
 starttime = datetime.now()
-
 
 @client.event
 async def on_message(message):
@@ -48,7 +48,8 @@ async def on_message(message):
         await message.channel.send('¯\_(ツ)_/¯')
     if message.content == '!uptime':
         runtime = datetime.now()-starttime
-        await message.channel.send(f"@Phil-Bot has been running for: {runtime}")
+        await message.channel.send(f"<@791794369824030781> has been running for: {runtime}")
+
 
 
     # reactions
