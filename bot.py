@@ -16,6 +16,7 @@ client = discord.Client()
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
 
+starttime = datetime.now()
 
 
 @client.event
@@ -45,7 +46,9 @@ async def on_message(message):
         await message.channel.send('Merry Christmas! 🎄🎅')
     if message.content == '!shrug':
         await message.channel.send('¯\_(ツ)_/¯')
-
+    if message.content == '!uptime':
+        runtime = datetime.now()-starttime
+        await message.channel.send(f"@Phil-Bot has been running for: {runtime}")
 
 
     # reactions
