@@ -132,3 +132,4 @@ env/
 venv/
 config.py
 
+suggestions.txt

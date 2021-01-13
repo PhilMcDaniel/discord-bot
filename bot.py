@@ -52,6 +52,13 @@ async def uptime(ctx):
     response = f"<@791794369824030781> has been running for: {runtime}"
     await ctx.send(response)
 
+@bot.command(name='addtobot',help='EX: !addtobot "add your suggestion here" ')    
+async def addsugg(ctx,suggestion):
+    with open("suggestions.txt",'a') as file_object:
+        file_object.write(f"{suggestion}\n")
+    await ctx.send(f"Suggestion added: {suggestion}")
+
+
 #message reply/reaction
 @bot.event
 async def on_message(message):
