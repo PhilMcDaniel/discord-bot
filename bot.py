@@ -41,9 +41,9 @@ async def movies(ctx):
     await ctx.send(embed = cal)
     await ctx.send(embed = vote)
 
-@bot.command(name='shrug')
+@bot.command(name='shrug',help=r'¯\_(ツ)_/¯')
 async def shrug(ctx):
-    response = '¯\_(ツ)_/¯'
+    response = r'¯\_(ツ)_/¯'
     await ctx.send(response)
 
 @bot.command(name='uptime',help='How long has the bot currently been running')    
