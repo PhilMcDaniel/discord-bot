@@ -19,7 +19,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
-
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="commands from my human masters"))
 starttime = datetime.now()
 
 #commands
