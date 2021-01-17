@@ -1,9 +1,13 @@
 #!/usr/bin/python3.7
 import discord
 import config
-from datetime import datetime
+import datetime
 import random
 from discord.ext import commands
+import atexit
+from decimal import *
+
+getcontext().prec = 15
 
 #https://discord.com/developers/applications
 #https://discordpy.readthedocs.io/en/latest/api.html
@@ -20,7 +24,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="commands from my human masters"))
-starttime = datetime.now()
+starttime = datetime.datetime.now()
 
 #commands
 @bot.command(name='movies',help='Links for movie night coordination. See "movie-night" channel for more info')
@@ -48,8 +52,15 @@ async def shrug(ctx):
 
 @bot.command(name='uptime',help='How long has the bot currently been running')    
 async def uptime(ctx):
-    runtime = datetime.now()-starttime
-    response = f"<@791794369824030781> has been running for: {runtime}"
+    #get old uptime
+    with open("uptime.txt",'r') as file:
+        olduptime = int(file.readline())
+    #get current delta
+    deltaseconds = int((datetime.datetime.now()-starttime).total_seconds())
+    deltatime = datetime.timedelta(seconds = deltaseconds)
+    #add old plus delta to get new
+    newuptime = datetime.timedelta(seconds=int(olduptime+deltaseconds))
+    response = f"Current uptime for <@791794369824030781> is: {deltatime}. Overall uptime is {newuptime}"
     await ctx.send(response)
 
 @bot.command(name='addtobot',help='EX: !addtobot "add your suggestion here" ')    
@@ -73,7 +84,7 @@ async def on_message(message):
 
     # reactions
     # if date is christmas, reply to every message with :santa:
-    if (datetime.now().month == 12):
+    if (datetime.datetime.now().month == 12):
         emote = ['🎅','🎄','🎁','❄️','🤶','🧝','🌟','☃️','⛄','🔥','🔔','🎶','🕯️','🦌']
         await message.add_reaction(random.choice(emote))
     #poop
@@ -82,5 +93,21 @@ async def on_message(message):
 
     #this is needed for the commands to work appropriately https://discordpy.readthedocs.io/en/latest/faq.html#why-does-on-message-make-my-commands-stop-working
     await bot.process_commands(message)
+
+
+
+#write new uptime to file
+def updateuptime():
+    with open("uptime.txt",'r') as file:
+        olduptime = int(file.readline())
+        deltaseconds = int((datetime.datetime.now()-starttime).total_seconds())
+        
+        #add old plus delta to get new
+        newuptimeseconds = olduptime + deltaseconds
+    
+    with open("uptime.txt", "w") as outfile:
+        outfile.write(str(newuptimeseconds))
+
+atexit.register(updateuptime)
 
 bot.run(TOKEN)

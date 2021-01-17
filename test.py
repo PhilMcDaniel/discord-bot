@@ -8,7 +8,7 @@ start = datetime.datetime.now()
 time.sleep(5)
 
 delta = (datetime.datetime.now()-start).total_seconds()
-print(delta)
+
 
 #read old total
 with open("uptime.txt",'r') as file:
