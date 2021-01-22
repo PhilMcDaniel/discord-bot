@@ -50,6 +50,12 @@ async def shrug(ctx):
     response = r'¯\_(ツ)_/¯'
     await ctx.send(response)
 
+@bot.command(name='playcsgo',help=r'Add bot to team in CS:GO')
+async def playcsgo(ctx):
+    messageuserid = ctx.message.author.id
+    response = f"I'm sorry <@{messageuserid}>, but based on my records it looks like your rank is too low to queue together. Please try again after you get gud."
+    await ctx.send(response)
+
 @bot.command(name='uptime',help='How long has the bot currently been running')    
 async def uptime(ctx):
     #get old uptime
