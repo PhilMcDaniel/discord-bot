@@ -70,12 +70,13 @@ async def uptime(ctx):
     await ctx.send(response)
 
 @bot.command(name='poke',help="Gently prod a user")
-async def poke(ctx):
+async def poke(ctx,user):
     with open("insults.txt") as file_object:
         lines = file_object.readlines()
     for line in lines:
         line = line.rstrip()
-    response = random.choice(lines)
+    randominsult = random.choice(lines)
+    response = f"{user} - {randominsult}"
     await ctx.send(response)
 
 @bot.command(name='addtobot',help='EX: !addtobot "add your suggestion here" ')    
