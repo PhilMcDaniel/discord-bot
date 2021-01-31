@@ -1,8 +1,13 @@
-import random
-with open("insults.txt") as file_object:
-    lines = file_object.readlines()
-for line in lines:
-    print(line.rstrip())
-response = random.choice(lines)
+import string
 
-print(response)
+escapedlist = []
+with open("jokes.txt",encoding="utf8") as file_object:
+    lines = file_object.readlines()
+    #lines
+for line in lines:
+    line = line.rstrip()
+    line = line.replace('\\n', '\n')
+    escapedlist.append(line)
+    
+lines
+escapedlist

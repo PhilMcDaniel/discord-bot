@@ -71,13 +71,30 @@ async def uptime(ctx):
 
 @bot.command(name='poke',help="Gently prod a user")
 async def poke(ctx,user):
-    with open("insults.txt") as file_object:
+    with open("insults.txt",encoding="utf8") as file_object:
         lines = file_object.readlines()
     for line in lines:
         line = line.rstrip()
     randominsult = random.choice(lines)
     response = f"{user} - {randominsult}"
     await ctx.send(response)
+
+
+@bot.command(name='joke',help="Replies back with a joke")
+async def joke(ctx):
+    escapedlist = []
+    with open("jokes.txt",encoding="utf8") as file_object:
+        lines = file_object.readlines()
+    for line in lines:
+       line = line.rstrip()
+       #there is an extra \ infront of \n so I'm manually removing it.
+       line = line.replace('\\n', '\n')
+       escapedlist.append(line)
+    randomjoke = random.choice(escapedlist)
+    response = f"{randomjoke}"
+    print(response)
+    await ctx.send(response)
+
 
 @bot.command(name='addtobot',help='EX: !addtobot "add your suggestion here" ')    
 async def addsugg(ctx,suggestion):
