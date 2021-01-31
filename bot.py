@@ -93,7 +93,7 @@ async def joke(ctx):
        escapedlist.append(line)
     randomjoke = random.choice(escapedlist)
     response = f"{randomjoke}"
-    print(response)
+    #print(response)
     await ctx.send(response)
 
 
