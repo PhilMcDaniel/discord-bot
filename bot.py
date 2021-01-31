@@ -56,7 +56,7 @@ async def playcsgo(ctx):
     response = f"I'm sorry <@{messageuserid}>, but based on my records it looks like your rank is too low to queue together. Please try again after you get gud."
     await ctx.send(response)
 
-@bot.command(name='uptime',help='How long has the bot currently been running')    
+@bot.command(name='uptime',help='How long has the bot currently been running')
 async def uptime(ctx):
     #get old uptime
     with open("uptime.txt",'r') as file:
@@ -67,6 +67,15 @@ async def uptime(ctx):
     #add old plus delta to get new
     newuptime = datetime.timedelta(seconds=int(olduptime+deltaseconds))
     response = f"Current uptime for <@791794369824030781> is: {deltatime}. Overall uptime is {newuptime}"
+    await ctx.send(response)
+
+@bot.command(name='poke',help="Gently prod a user")
+async def poke(ctx):
+    with open("insults.txt") as file_object:
+        lines = file_object.readlines()
+    for line in lines:
+        line = line.rstrip()
+    response = random.choice(lines)
     await ctx.send(response)
 
 @bot.command(name='addtobot',help='EX: !addtobot "add your suggestion here" ')    
