@@ -67,6 +67,7 @@ async def uptime(ctx):
     #add old plus delta to get new
     newuptime = datetime.timedelta(seconds=int(olduptime+deltaseconds))
     response = f"Current uptime for <@791794369824030781> is: {deltatime}. Overall uptime is {newuptime}"
+    print(olduptime+deltaseconds)
     await ctx.send(response)
 
 @bot.command(name='poke',help="Gently prod a user")
