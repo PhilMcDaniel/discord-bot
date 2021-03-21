@@ -5,7 +5,7 @@ import datetime
 import random
 from discord.ext import commands
 import atexit
-from rlrankparser import get_URL
+from rlrankparser import get_url,parse_url
 from decimal import *
 
 
@@ -107,7 +107,8 @@ async def addsugg(ctx,suggestion):
 
 @bot.command(name='rlrank',help='Returns Rocket League ranks. !rlrank platform platformid')
 async def getrlrank(ctx,platform,platformid):
-    await ctx.send(get_URL(platform,platformid))
+    await ctx.send(get_url(platform,platformid))
+    #await ctx.send(parse_url(get_url(platform,platformid)))
 
 #message reply/reaction
 @bot.event

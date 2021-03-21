@@ -1,4 +1,4 @@
-import string
-import rlrankparser
+import pyautogui
 
-get_URL("sdaf","1234")
+im1 = pyautogui.screenshot()
+im2 = pyautogui.screenshot('my_screenshot.png')
