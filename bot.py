@@ -110,6 +110,19 @@ async def getrlrank(ctx,platform,platformid):
     await ctx.send(get_url(platform,platformid))
     #await ctx.send(parse_url(get_url(platform,platformid)))
 
+@bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
+async def random_numbers(ctx,amount,min,max):
+    total = 0
+    numbers=[]
+    if int(amount) <= 1000 and int(amount) >= 1:
+        for x in range(1,int(amount)+1):
+            value = (random.randint(int(min),int(max)))
+            numbers.append(value)
+            total = total + value
+        await ctx.send(f"{numbers} Total = {total}")
+    else:
+        await ctx.send(f"Please choose an amount of numbers between 1 and 1000")
+
 #message reply/reaction
 @bot.event
 async def on_message(message):
@@ -121,9 +134,6 @@ async def on_message(message):
         await message.channel.send('Happy Birthday! 🎈🎉')
     if 'merry christmas' in message.content.lower():
         await message.channel.send('Merry Christmas! 🎄🎅')
-
-    if 'bottest' in message.content.lower():
-        await message.channel.send('bottest successful')
 
     # reactions
     # if date is christmas, reply to every message with :santa:
