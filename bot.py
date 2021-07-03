@@ -122,6 +122,9 @@ async def on_message(message):
     if 'merry christmas' in message.content.lower():
         await message.channel.send('Merry Christmas! 🎄🎅')
 
+    if 'bottest' in message.content.lower():
+        await message.channel.send('bottest successful')
+
     # reactions
     # if date is christmas, reply to every message with :santa:
     if (datetime.datetime.now().month == 12):
