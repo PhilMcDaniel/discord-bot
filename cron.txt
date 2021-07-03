@@ -1,0 +1,8 @@
+# https://crontab.guru/#*_*_*_*_*
+
+# pull bot git repo every night at 2:50 AM
+50 2 * * * cd Documents/src/discord-bot/ && git pull origin main
+# stop bot script every night at 2:55 AM
+55 2 * * * killall python3
+# start bot script every night at 3:00 AM
+0 3 * * * python3 /home/pi/Documents/src/discord-bot/bot.py
