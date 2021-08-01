@@ -22,32 +22,24 @@ def get_rank_from_api(url):
     }
     api_response = requests.get(url,headers=headers)
     api_response = api_response.json()
-
-    #user metadata (name,platform,id)
+    
+    #get user info
     username = api_response['data']['platformInfo']['platformUserHandle']
     platform = api_response['data']['platformInfo']['platformSlug']
     platformid = api_response['data']['platformInfo']['platformUserIdentifier']
     user_info = f"Platform: {platform}, Platform ID: {platformid}, Username: {username}"
+    response_list=[]
+    response_list.append(user_info)
+    for key in api_response['data']['segments']:
+        #lifetime doesn't have normal keys
+        if key['metadata']['name']=='Lifetime':
+            pass
+        else:
+            playlist = key['metadata']['name']
+            rank = key['stats']['tier']['metadata']['name']
+            division = key['stats']['division']['metadata']['name']
+            mmr = key['stats']['rating']['value']
+            response_list.append(f"Playlist: {playlist}, Rank: {rank}-{division}, MMR: {mmr}")
     
-    #found by using .keys() down the json response tree
-    #2v2 data
-    playlist = api_response['data']['segments'][3]['metadata']['name']
-    rank = api_response['data']['segments'][3]['stats']['tier']['metadata']['name']
-    division = api_response['data']['segments'][3]['stats']['division']['metadata']['name']
-    mmr = api_response['data']['segments'][3]['stats']['rating']['value']
-    twos_data = f"Playlist: {playlist}, Rank: {rank} - {division}, MMR: {mmr}"
-    
-
-    #3v3 data
-    playlist = api_response['data']['segments'][4]['metadata']['name']
-    rank = api_response['data']['segments'][4]['stats']['tier']['metadata']['name']
-    division = api_response['data']['segments'][4]['stats']['division']['metadata']['name']
-    mmr = api_response['data']['segments'][4]['stats']['rating']['value']
-    threes_data = f"Playlist: {playlist}, Rank: {rank} - {division}, MMR: {mmr}"
-    
-
-    response = f"{user_info} | {twos_data} | {threes_data}"
-    return(response)
-    
-    
+    return(response_list)
 #get_rank_from_api(form_url('steam','76561198040589211'))
