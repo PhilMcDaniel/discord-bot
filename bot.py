@@ -107,7 +107,11 @@ async def addsugg(ctx,suggestion):
 
 @bot.command(name='rlrank',help='Returns Rocket League ranks. !rlrank platform platformid')
 async def getrlrank(ctx,platform,platformid):
-    await ctx.send(get_rank_from_api(form_url(platform,platformid)))
+    #store list of ratings from scraping in list
+    resp_list = get_rank_from_api(form_url(platform,platformid))
+    #send message for each rating
+    for resp in resp_list:
+        await ctx.send(resp)
 
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
 async def random_numbers(ctx,amount,min,max):
