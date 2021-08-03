@@ -7,6 +7,25 @@ from discord.ext import commands
 import atexit
 from rlrankparser import form_url,get_rank_from_api
 from decimal import *
+import logging
+
+
+# create logger so root is not used
+logger = logging.getLogger('bot')
+logger.setLevel(logging.DEBUG)
+# create file handler which logs even debug messages
+fh = logging.FileHandler('bot.log')
+fh.setLevel(logging.DEBUG)
+# create formatter and add it to the handlers
+#d stores key value extra data to log
+d = {'command':'NA'}
+formatter = logging.Formatter('%(asctime)s,%(levelname)s,%(command)s,%(message)s',datefmt='%Y-%m-%d %H:%M:%S')
+fh.setFormatter(formatter)
+# add the handlers to the logger
+logger.addHandler(fh)
+
+#disable/enable logging here
+logger.disabled = False
 
 
 getcontext().prec = 15
@@ -25,12 +44,14 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
+    logger.info(f'{bot.user.name} has connected to Discord!',extra=d)
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="commands from my human masters"))
 starttime = datetime.datetime.now()
 
 #commands
 @bot.command(name='movies',help='Links for movie night coordination. See "movie-night" channel for more info')
 async def movies(ctx):
+    d = {'command':'!movies'}
     #format the sheet embed
     sheet=discord.Embed(title="Movies Google Sheet", url=config.MOVIE_SHEET, description="Shared Google Sheet where we pick movies/shows to watch together.", color=0xFF5733)
     sheet.set_thumbnail(url="https://i.imgur.com/0hQyd5L.gif")
@@ -46,20 +67,26 @@ async def movies(ctx):
     await ctx.send(embed = sheet)
     await ctx.send(embed = cal)
     await ctx.send(embed = vote)
+    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='shrug',help=r'¯\_(ツ)_/¯')
 async def shrug(ctx):
+    d = {'command':'!shrug'}
     response = r'¯\_(ツ)_/¯'
     await ctx.send(response)
+    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='playcsgo',help=r'Add bot to team in CS:GO')
 async def playcsgo(ctx):
+    d = {'command':'!playcsgo'}
     messageuserid = ctx.message.author.id
     response = f"I'm sorry <@{messageuserid}>, but based on my records it looks like your rank is too low to queue together. Please try again after you get gud."
     await ctx.send(response)
+    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='uptime',help='How long has the bot currently been running')
 async def uptime(ctx):
+    d = {'command':'!uptime'}
     #get old uptime
     with open("uptime.txt",'r') as file:
         olduptime = int(file.readline())
@@ -69,11 +96,12 @@ async def uptime(ctx):
     #add old plus delta to get new
     newuptime = datetime.timedelta(seconds=int(olduptime+deltaseconds))
     response = f"Current uptime for <@791794369824030781> is: {deltatime}. Overall uptime is {newuptime}"
-    print(olduptime+deltaseconds)
     await ctx.send(response)
+    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='poke',help="Gently prod a user")
 async def poke(ctx,user):
+    d = {'command':'!poke'}
     with open("insults.txt",encoding="utf8") as file_object:
         lines = file_object.readlines()
     for line in lines:
@@ -81,10 +109,12 @@ async def poke(ctx,user):
     randominsult = random.choice(lines)
     response = f"{user} - {randominsult}"
     await ctx.send(response)
+    logger.info(f'Command issued',extra=d)
 
 
 @bot.command(name='joke',help="Replies back with a joke")
 async def joke(ctx):
+    d = {'command':'!joke'}
     escapedlist = []
     with open("jokes.txt",encoding="utf8") as file_object:
         lines = file_object.readlines()
@@ -95,26 +125,31 @@ async def joke(ctx):
        escapedlist.append(line)
     randomjoke = random.choice(escapedlist)
     response = f"{randomjoke}"
-    #print(response)
     await ctx.send(response)
+    logger.info(f'Command issued',extra=d)
 
 
 @bot.command(name='addtobot',help='EX: !addtobot "add your suggestion here" ')    
 async def addsugg(ctx,suggestion):
+    d = {'command':'!suggestion'}
     with open("suggestions.txt",'a') as file_object:
         file_object.write(f"{suggestion}\n")
     await ctx.send(f"Suggestion added: {suggestion}")
+    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='rlrank',help='Returns Rocket League ranks. !rlrank platform platformid')
 async def getrlrank(ctx,platform,platformid):
+    d = {'command':'!rlrank'}
     #store list of ratings from scraping in list
     resp_list = get_rank_from_api(form_url(platform,platformid))
     #send message for each rating
     for resp in resp_list:
         await ctx.send(resp)
+    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
 async def random_numbers(ctx,amount,min,max):
+    d = {'command':'!rng'}
     total = 0
     numbers=[]
     if int(amount) <= 1000 and int(amount) >= 1:
@@ -125,6 +160,7 @@ async def random_numbers(ctx,amount,min,max):
         await ctx.send(f"{numbers} Total = {total}")
     else:
         await ctx.send(f"Please choose an amount of numbers between 1 and 1000")
+    logger.info(f'Command issued',extra=d)
 
 #message reply/reaction
 @bot.event
