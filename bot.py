@@ -157,13 +157,12 @@ async def aiart(ctx,text_prompt):
     n=2,
     size="1024x1024")
 
-    #show 2 images instead of one. Too lazy to programmatically do this
-    image_url = response['data'][0]['url']
-    image_url = response['data'][1]['url']
 
-    #TODO add some error handling because there are lots of prompts that get rejected due to safety system
+    #TODO add some error handling because there are lots of prompts that get rejected due to safety system   
+    #loop through URL responses and return all
+    for resp in response['data']:
+        await ctx.send(resp['url'])
 
-    await ctx.send(image_url)
     logger.info(f'Command issued',extra=d)
 
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
