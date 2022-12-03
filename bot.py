@@ -152,17 +152,16 @@ async def getrlrank(ctx,platform,platformid):
 @bot.command(name='aiart',help='Returns ai art from OpenAI based on prompt')
 async def aiart(ctx,text_prompt):
     d = {'command':'!aiart'}
-    response = openai.Image.create(
-    prompt=text_prompt,
-    n=2,
-    size="512x512")
-
-
-    #TODO add some error handling because there are lots of prompts that get rejected due to safety system   
-    #loop through URL responses and return all
-    for resp in response['data']:
-        await ctx.send(resp['url'])
-
+    try:
+        response = openai.Image.create(
+        prompt=text_prompt,
+        n=2,
+        size="512x512")
+        #loop through URL responses and return all
+        for resp in response['data']:
+            await ctx.send(resp['url'])
+    except:
+        await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")
     logger.info(f'Command issued',extra=d)
 
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
