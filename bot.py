@@ -41,7 +41,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 #authenticate openai
-
+openai.api_key = config.API_KEY
 
 # login
 @bot.event
@@ -160,7 +160,7 @@ async def aiart(ctx,text_prompt):
         #loop through URL responses and return all
         for resp in response['data']:
             await ctx.send(resp['url'])
-    except:
+    except openai.InvalidRequestError:
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")
     logger.info(f'Command issued',extra=d)
 
