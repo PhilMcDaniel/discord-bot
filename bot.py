@@ -36,13 +36,12 @@ getcontext().prec = 15
 
 TOKEN = config.DISCORD_TOKEN
 
-
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 #authenticate openai
-openai.api_key = os.environ["OPENAI_KEY"]
+openai.api_key = config.API_KEY
 
 # login
 @bot.event
@@ -59,7 +58,6 @@ async def movies(ctx):
     #format the sheet embed
     sheet=discord.Embed(title="Movies Google Sheet", url=config.MOVIE_SHEET, description="Shared Google Sheet where we pick movies/shows to watch together.", color=0xFF5733)
     sheet.set_thumbnail(url="https://i.imgur.com/0hQyd5L.gif")
-    
     #format the calendar embed
     cal=discord.Embed(title="Movies Google Calendar", url=config.MOVIE_CALENDAR, description="Shared Google Calendar used to keep track of when we are watching movies/shows.", color=0xFF5733)
     cal.set_thumbnail(url="https://i.pinimg.com/originals/63/be/5f/63be5f30749ff7be7bb4a633ffac763f.gif")
@@ -155,7 +153,7 @@ async def getrlrank(ctx,platform,platformid):
 async def aiart(ctx,text_prompt):
     d = {'command':'!aiart'}
     response = openai.Image.create(
-    prompt="Rocket League on the moon",
+    prompt=text_prompt,
     n=1,
     size="512x512")
 
