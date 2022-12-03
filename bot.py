@@ -41,7 +41,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 #authenticate openai
-openai.api_key = config.API_KEY
+
 
 # login
 @bot.event
@@ -155,7 +155,7 @@ async def aiart(ctx,text_prompt):
     response = openai.Image.create(
     prompt=text_prompt,
     n=2,
-    size="1024x1024")
+    size="512x512")
 
 
     #TODO add some error handling because there are lots of prompts that get rejected due to safety system   
