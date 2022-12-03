@@ -164,6 +164,22 @@ async def aiart(ctx,text_prompt):
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")
     logger.info(f'Command issued',extra=d)
 
+@bot.command(name='aitext',help='Replies back in an intelligent manner based on prompt')
+async def aiart(ctx,text_prompt):
+    d = {'command':'!aitext'}
+    try:
+        response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=text_prompt,
+        max_tokens=256,
+        n=1,
+        stream=False
+        )
+        await ctx.send(response['choices'][0]['text'])
+    except openai.InvalidRequestError:
+        await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")    
+    logger.info(f'Command issued',extra=d)
+
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
 async def random_numbers(ctx,amount,min,max):
     d = {'command':'!rng'}
