@@ -154,10 +154,14 @@ async def aiart(ctx,text_prompt):
     d = {'command':'!aiart'}
     response = openai.Image.create(
     prompt=text_prompt,
-    n=1,
-    size="512x512")
+    n=2,
+    size="1024x1024")
 
+    #show 2 images instead of one. Too lazy to programmatically do this
     image_url = response['data'][0]['url']
+    image_url = response['data'][1]['url']
+
+    #TODO add some error handling because there are lots of prompts that get rejected due to safety system
 
     await ctx.send(image_url)
     logger.info(f'Command issued',extra=d)
