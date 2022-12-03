@@ -8,7 +8,8 @@ import atexit
 from rlrankparser import form_url,get_rank_from_api
 from decimal import *
 import logging
-
+import openai
+import os
 
 # create logger so root is not used
 logger = logging.getLogger('bot')
@@ -39,6 +40,9 @@ TOKEN = config.DISCORD_TOKEN
 intents = discord.Intents.default()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
+
+#authenticate openai
+openai.api_key = os.environ["OPENAI_KEY"]
 
 # login
 @bot.event
@@ -145,6 +149,19 @@ async def getrlrank(ctx,platform,platformid):
     #send message for each rating
     for resp in resp_list:
         await ctx.send(resp)
+    logger.info(f'Command issued',extra=d)
+
+@bot.command(name='aiart',help='Returns ai art from OpenAI based on prompt')
+async def aiart(ctx,text_prompt):
+    d = {'command':'!aiart'}
+    response = openai.Image.create(
+    prompt="Rocket League on the moon",
+    n=1,
+    size="512x512")
+
+    image_url = response['data'][0]['url']
+
+    await ctx.send(image_url)
     logger.info(f'Command issued',extra=d)
 
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
