@@ -157,14 +157,14 @@ async def aiart(ctx,text_prompt):
         await ctx.send("OpenAI moderation category results\n")
         #category scores
         for key, value in moderation_response['results'][0]['category_scores'].items():
-            await ctx.send(f"Category: {key}, score: {format(value,'.4f')}")
+            await ctx.send(f"\t - Category: {key}, score: {format(value,'.4f')}")
         #category results
         for key, value in moderation_response['results'][0]['categories'].items():
-            await ctx.send(f"Category: {key}, flagged?: {value}")
+            await ctx.send(f"\t - Category: {key}, flagged?: {value}")
         #overall result
-        await ctx.send(f"\nOverall Flagged?: {moderation_response['results'][0]['flagged']}")
+        await ctx.send(f"\nOverall Flagged?: {moderation_response['results'][0]['flagged']}\n")
     except:
-        pass    
+        pass 
     try:
         response = openai.Image.create(
         prompt=text_prompt,
@@ -186,10 +186,10 @@ async def aiart(ctx,text_prompt):
         await ctx.send("OpenAI moderation category results\n")
         #category scores
         for key, value in moderation_response['results'][0]['category_scores'].items():
-            await ctx.send(f"Category: {key}, score: {format(value,'.4f')}")
+            await ctx.send(f"\t - Category: {key}, score: {format(value,'.4f')}")
         #category results
         for key, value in moderation_response['results'][0]['categories'].items():
-            await ctx.send(f"Category: {key}, flagged?: {value}")
+            await ctx.send(f"\t - Category: {key}, flagged?: {value}")
         #overall result
         await ctx.send(f"\nOverall Flagged?: {moderation_response['results'][0]['flagged']}")
     except:
@@ -202,6 +202,7 @@ async def aiart(ctx,text_prompt):
         n=1,
         stream=False
         )
+        await ctx.send("\n\nRESULT:\n")
         await ctx.send(response['choices'][0]['text'])
     except openai.InvalidRequestError:
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")    
