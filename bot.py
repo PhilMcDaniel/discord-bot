@@ -153,6 +153,19 @@ async def getrlrank(ctx,platform,platformid):
 async def aiart(ctx,text_prompt):
     d = {'command':'!aiart'}
     try:
+        moderation_response = openai.Moderation.create(input=text_prompt)
+        await ctx.send("OpenAI moderation category results\n")
+        #category scores
+        for key, value in moderation_response['results'][0]['category_scores'].items():
+            await ctx.send(f"Category: {key}, score: {format(value,'.4f')}")
+        #category results
+        for key, value in moderation_response['results'][0]['categories'].items():
+            await ctx.send(f"Category: {key}, flagged?: {value}")
+        #overall result
+        await ctx.send(f"\nOverall Flagged?: {moderation_response['results'][0]['flagged']}")
+    except:
+        pass    
+    try:
         response = openai.Image.create(
         prompt=text_prompt,
         n=2,
@@ -167,6 +180,20 @@ async def aiart(ctx,text_prompt):
 @bot.command(name='aitext',help='Replies back in an intelligent manner based on prompt')
 async def aiart(ctx,text_prompt):
     d = {'command':'!aitext'}
+    
+    try:
+        moderation_response = openai.Moderation.create(input=text_prompt)
+        await ctx.send("OpenAI moderation category results\n")
+        #category scores
+        for key, value in moderation_response['results'][0]['category_scores'].items():
+            await ctx.send(f"Category: {key}, score: {format(value,'.4f')}")
+        #category results
+        for key, value in moderation_response['results'][0]['categories'].items():
+            await ctx.send(f"Category: {key}, flagged?: {value}")
+        #overall result
+        await ctx.send(f"\nOverall Flagged?: {moderation_response['results'][0]['flagged']}")
+    except:
+        pass
     try:
         response = openai.Completion.create(
         model="text-davinci-003",
