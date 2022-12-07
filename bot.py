@@ -160,12 +160,7 @@ async def aiart(ctx,text_prompt):
     except:
         pass
     try:
-        response = openai.Image.create(
-        prompt=text_prompt,
-        n=2,
-        size="512x512")
-        #loop through URL responses and return all
-        for resp in response['data']:
+        for resp in get_aiart(text_prompt):
             await ctx.send(resp['url'])
     except openai.InvalidRequestError:
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")
@@ -182,15 +177,8 @@ async def aiart(ctx,text_prompt):
     except:
         pass
     try:
-        response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=text_prompt,
-        max_tokens=256,
-        n=1,
-        stream=False
-        )
         await ctx.send("\n\nRESULT:\n")
-        await ctx.send(response['choices'][0]['text'])
+        await ctx.send(get_aitext_completion(text_prompt))
     except openai.InvalidRequestError:
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")    
     logger.info(f'Command issued',extra=d)
