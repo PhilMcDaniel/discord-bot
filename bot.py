@@ -183,6 +183,21 @@ async def aiart(ctx,text_prompt):
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")    
     logger.info(f'Command issued',extra=d)
 
+
+@bot.command(name='aiartvariation',help='Gets image from URL, returns variant image from openai')
+async def aiart(ctx,url):
+    d = {'command':'!aiartvariation'}
+    try:
+        #send original
+        await ctx.send('\nORIGINAL')
+        await ctx.send(url)
+        await ctx.send('\n\nVARIATION\n')
+        for img in get_aiart_variation(url):
+            await ctx.send(img['url'])
+    except:
+        print('error getting result from openai')
+    logger.info(f'Command issued',extra=d)
+
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
 async def random_numbers(ctx,amount,min,max):
     d = {'command':'!rng'}
