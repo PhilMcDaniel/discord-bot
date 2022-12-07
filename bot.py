@@ -1,15 +1,17 @@
 #!/usr/bin/python3.7
 import discord
-import config
 import datetime
 import random
 from discord.ext import commands
 import atexit
-from rlrankparser import form_url,get_rank_from_api
 from decimal import *
 import logging
 import openai
 import os
+
+from rlrankparser import form_url,get_rank_from_api
+import config
+from openai_functions import *
 
 # create logger so root is not used
 logger = logging.getLogger('bot')
@@ -40,8 +42,6 @@ intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-#authenticate openai
-openai.api_key = config.API_KEY
 
 # login
 @bot.event
@@ -153,18 +153,12 @@ async def getrlrank(ctx,platform,platformid):
 async def aiart(ctx,text_prompt):
     d = {'command':'!aiart'}
     try:
-        moderation_response = openai.Moderation.create(input=text_prompt)
         await ctx.send("OpenAI moderation category results\n")
         #category scores
-        for key, value in moderation_response['results'][0]['category_scores'].items():
+        for key, value in get_moderation_category_scores(text_prompt).items():
             await ctx.send(f"\t - Category: {key}, score: {format(value,'.4f')}")
-        #category results
-        for key, value in moderation_response['results'][0]['categories'].items():
-            await ctx.send(f"\t - Category: {key}, flagged?: {value}")
-        #overall result
-        await ctx.send(f"\nOverall Flagged?: {moderation_response['results'][0]['flagged']}\n")
     except:
-        pass 
+        pass
     try:
         response = openai.Image.create(
         prompt=text_prompt,
@@ -180,18 +174,11 @@ async def aiart(ctx,text_prompt):
 @bot.command(name='aitext',help='Replies back in an intelligent manner based on prompt')
 async def aiart(ctx,text_prompt):
     d = {'command':'!aitext'}
-    
     try:
-        moderation_response = openai.Moderation.create(input=text_prompt)
         await ctx.send("OpenAI moderation category results\n")
         #category scores
-        for key, value in moderation_response['results'][0]['category_scores'].items():
+        for key, value in get_moderation_category_scores(text_prompt).items():
             await ctx.send(f"\t - Category: {key}, score: {format(value,'.4f')}")
-        #category results
-        for key, value in moderation_response['results'][0]['categories'].items():
-            await ctx.send(f"\t - Category: {key}, flagged?: {value}")
-        #overall result
-        await ctx.send(f"\nOverall Flagged?: {moderation_response['results'][0]['flagged']}")
     except:
         pass
     try:
