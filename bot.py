@@ -170,13 +170,6 @@ async def aiart(ctx,text_prompt):
 async def aiart(ctx,text_prompt):
     d = {'command':'!aitext'}
     try:
-        await ctx.send("OpenAI moderation category results\n")
-        #category scores
-        for key, value in get_moderation_category_scores(text_prompt).items():
-            await ctx.send(f"\t - Category: {key}, score: {format(value,'.4f')}")
-    except:
-        pass
-    try:
         await ctx.send("\n\nRESULT:\n")
         await ctx.send(get_aitext_completion(text_prompt))
     except openai.InvalidRequestError:
