@@ -153,13 +153,6 @@ async def getrlrank(ctx,platform,platformid):
 async def aiart(ctx,text_prompt):
     d = {'command':'!aiart'}
     try:
-        await ctx.send("OpenAI moderation category results\n")
-        #category scores
-        for key, value in get_moderation_category_scores(text_prompt).items():
-            await ctx.send(f"\t - Category: {key}, score: {format(value,'.4f')}")
-    except:
-        pass
-    try:
         for resp in get_aiart(text_prompt):
             await ctx.send(resp['url'])
     except openai.InvalidRequestError:
