@@ -163,7 +163,6 @@ async def aiart(ctx,text_prompt):
 async def aiart(ctx,text_prompt):
     d = {'command':'!aitext'}
     try:
-        await ctx.send("\n\nRESULT:\n")
         await ctx.send(get_aitext_completion(text_prompt))
     except openai.InvalidRequestError:
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")    
