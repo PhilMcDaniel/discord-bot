@@ -41,9 +41,9 @@ def get_aitext_completion(aitext_text_prompt):
     """retrives ai text from openai completion ai"""
     try:
         response = openai.Completion.create(
-        model="text-davinci-003",
+        model="gpt-3.5-turbo-instruct",
         prompt=aitext_text_prompt,
-        max_tokens=256,
+        max_tokens=512,
         n=1,
         stream=False
         )
