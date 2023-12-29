@@ -198,6 +198,16 @@ async def random_numbers(ctx,amount,min,max):
         await ctx.send(f"Please choose an amount of numbers between 1 and 1000")
     logger.info(f'Command issued',extra=d)
 
+@bot.command(name='lore',help="Reaches through the annals of the historical record to return significant moments.")
+async def joke(ctx):
+    d = {'command':'!lore'}
+    with open("lore.txt",encoding="utf8") as file_object:
+        lines = file_object.readlines()
+    for line in lines:
+        line = line.rstrip()
+        await ctx.send(line)
+    logger.info(f'Command issued',extra=d)
+
 #message reply/reaction
 @bot.event
 async def on_message(message):
