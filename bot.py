@@ -131,15 +131,6 @@ async def getrlrank(ctx,platform,platformid):
         await ctx.send(resp)
     logger.info(f'Command issued',extra=d)
 
-@bot.command(name='aiart',help='Returns ai art from OpenAI based on prompt')
-async def aiart(ctx,text_prompt):
-    d = {'command':'!aiart'}
-    try:
-        for resp in get_aiart(text_prompt):
-            await ctx.send(resp['url'])
-    except openai.InvalidRequestError:
-        await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")
-    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='aitext',help='Replies back in an intelligent manner based on prompt')
 async def aiart(ctx,text_prompt):
