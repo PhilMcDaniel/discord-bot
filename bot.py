@@ -52,24 +52,6 @@ async def on_ready():
 starttime = datetime.datetime.now()
 
 #commands
-@bot.command(name='movies',help='Links for movie night coordination. See "movie-night" channel for more info')
-async def movies(ctx):
-    d = {'command':'!movies'}
-    #format the sheet embed
-    sheet=discord.Embed(title="Movies Google Sheet", url=config.MOVIE_SHEET, description="Shared Google Sheet where we pick movies/shows to watch together.", color=0xFF5733)
-    sheet.set_thumbnail(url="https://i.imgur.com/0hQyd5L.gif")
-    #format the calendar embed
-    cal=discord.Embed(title="Movies Google Calendar", url=config.MOVIE_CALENDAR, description="Shared Google Calendar used to keep track of when we are watching movies/shows.", color=0xFF5733)
-    cal.set_thumbnail(url="https://i.pinimg.com/originals/63/be/5f/63be5f30749ff7be7bb4a633ffac763f.gif")
-
-    #format the calendar embed
-    vote=discord.Embed(title="Movies Date Vote", url=config.MOVIE_VOTE, description="Vote for the next movie night date.", color=0xFF5733)
-    vote.set_thumbnail(url="https://media2.giphy.com/media/55m7McmQ9tcD26kQ3I/giphy.gif?cid=ecf05e47u8ah5z3t5v5w6b9dyv8fipeu1jrtf84an19zuehy&rid=giphy.gif")
-
-    await ctx.send(embed = sheet)
-    await ctx.send(embed = cal)
-    await ctx.send(embed = vote)
-    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='shrug',help=r'¯\_(ツ)_/¯')
 async def shrug(ctx):
@@ -168,20 +150,6 @@ async def aiart(ctx,text_prompt):
         await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")    
     logger.info(f'Command issued',extra=d)
 
-
-@bot.command(name='aiartvariation',help='Gets image from URL, returns variant image from openai')
-async def aiart(ctx,url):
-    d = {'command':'!aiartvariation'}
-    try:
-        #send original
-        await ctx.send('\nORIGINAL')
-        await ctx.send(url)
-        await ctx.send('\n\nVARIATION\n')
-        for img in get_aiart_variation(url):
-            await ctx.send(img['url'])
-    except:
-        print('error getting result from openai')
-    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
 async def random_numbers(ctx,amount,min,max):
