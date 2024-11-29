@@ -6,7 +6,6 @@ from discord.ext import commands
 import atexit
 from decimal import *
 import logging
-import openai
 import os
 
 from rlrankparser import form_url,get_rank_from_api
