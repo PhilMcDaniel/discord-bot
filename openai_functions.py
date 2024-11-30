@@ -3,6 +3,7 @@ import os
 import config
 import requests
 
+import re
 
 #authenticate openai
 client = OpenAI(api_key=config.API_KEY)
@@ -26,5 +27,25 @@ def get_aitext_completion(aitext_text_prompt):
         pass
 #get_aitext_completion('Tell me a short moral story in a haiku')
 
+def split_at_punctuation(text, threshold=1500, max_length=10000):
+    chunks = []
+    start = 0
 
-#print(get_aiart_variation('https://cdn.britannica.com/35/7535-004-99D14F9B/Winston-Churchill-Yousuf-Karsh-1941.jpg')[0]['url'])
+    while start < len(text):
+        # Find the next chunk within the allowed range
+        end = min(start + max_length, len(text))
+        substring = text[start:end]
+
+        # Look for the first punctuation after the threshold
+        match = re.search(r'[.!?]', substring[threshold:])
+        if match:
+            split_point = start + threshold + match.start() + 1
+        else:
+            # No punctuation found, split at max_length
+            split_point = end
+
+        # Add the chunk
+        chunks.append(text[start:split_point].strip())
+        start = split_point
+
+    return chunks

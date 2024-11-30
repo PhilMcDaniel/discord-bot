@@ -132,12 +132,17 @@ async def getrlrank(ctx,platform,platformid):
 
 
 @bot.command(name='aitext',help='Replies back in an intelligent manner based on prompt')
-async def aiart(ctx,text_prompt):
+async def aitext(ctx,text_prompt):
     d = {'command':'!aitext'}
     try:
-        await ctx.send(get_aitext_completion(text_prompt))
-    except openai.InvalidRequestError:
-        await ctx.send("Your prompt contained text that was not allowed by the openai safety system.")    
+        openai_response = get_aitext_completion(text_prompt)
+        #split because discord can only send 2000 character messages
+        split_response = split_at_punctuation(openai_response)
+        for chunk in split_response:
+            await ctx.send(chunk)
+    except Exception as e:
+        await ctx.send(f"There was an issue sending the request to openai. Error: :{e}")
+        logger.info(f"OpenAI error: {e}")
     logger.info(f'Command issued',extra=d)
 
 
