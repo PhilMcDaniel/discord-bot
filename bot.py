@@ -162,7 +162,7 @@ async def random_numbers(ctx,amount,min,max):
     logger.info(f'Command issued',extra=d)
 
 @bot.command(name='lore',help="Reaches through the annals of the historical record to return significant moments.")
-async def joke(ctx):
+async def lore(ctx):
     d = {'command':'!lore'}
     with open("lore.txt",encoding="utf8") as file_object:
         lines = file_object.readlines()
@@ -174,28 +174,29 @@ async def joke(ctx):
 #message reply/reaction
 @bot.event
 async def on_message(message):
+    try:
     # make sure the bot doesn't reply to itself
-    if message.author == bot.user:
-        return
+        if message.author == bot.user:
+            return
 
-    if 'happy birthday' in message.content.lower():
-        await message.channel.send('Happy Birthday! 🎈🎉')
-    if 'merry christmas' in message.content.lower():
-        await message.channel.send('Merry Christmas! 🎄🎅')
+        if 'happy birthday' in message.content.lower():
+            await message.channel.send('Happy Birthday! 🎈🎉')
+        if 'merry christmas' in message.content.lower():
+            await message.channel.send('Merry Christmas! 🎄🎅')
 
-    # reactions
-    # if date is christmas, reply to every message with :santa:
-    if (datetime.datetime.now().month == 12):
-        emote = ['🎅','🎄','🎁','❄️','🤶','🧝','🌟','☃️','⛄','🔥','🔔','🎶','🕯️','🦌']
-        await message.add_reaction(random.choice(emote))
-    #poop
-    if 'poo' in message.content.lower() or 'shit' in message.content.lower() or 'dump' in message.content.lower():
-        await message.add_reaction('💩')
+        # reactions
+        # if date is christmas, reply to every message with :santa:
+        if (datetime.datetime.now().month == 12):
+            emote = ['🎅','🎄','🎁','❄️','🤶','🧝','🌟','☃️','⛄','🔥','🔔','🎶','🕯️','🦌']
+            await message.add_reaction(random.choice(emote))
+        #poop
+        if 'poo' in message.content.lower() or 'shit' in message.content.lower() or 'dump' in message.content.lower():
+            await message.add_reaction('💩')
 
-    #this is needed for the commands to work appropriately https://discordpy.readthedocs.io/en/latest/faq.html#why-does-on-message-make-my-commands-stop-working
-    await bot.process_commands(message)
-
-
+        #this is needed for the commands to work appropriately https://discordpy.readthedocs.io/en/latest/faq.html#why-does-on-message-make-my-commands-stop-working
+        await bot.process_commands(message)
+    except Exception as e:
+        logger.info(f"error in on_message, {e}")
 
 #write new uptime to file
 def updateuptime():
