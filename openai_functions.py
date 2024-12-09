@@ -49,3 +49,24 @@ def split_at_punctuation(text, threshold=1500, max_length=10000):
         start = split_point
 
     return chunks
+
+def get_aiimage(aiart_text_prompt):
+    """generates an image using the openai image generation api"""
+    try:
+        response = client.images.generate(
+        model="dall-e-3",
+        prompt=f"{aiart_text_prompt}",
+        size="1024x1024",
+        quality="standard",
+        n=1,
+        )
+        image_url = response.data[0].url
+        return image_url
+    except Exception as err:
+        #return print(f"Unexpected {err=}, {type(err)=}")
+        raise
+    except OpenAI.OpenAIError as e:
+        print(e.http_status)
+        print(e.error)
+#image = get_aiimage('test image')
+#image

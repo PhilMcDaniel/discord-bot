@@ -131,7 +131,7 @@ async def getrlrank(ctx,platform,platformid):
     logger.info(f'Command issued',extra=d)
 
 
-@bot.command(name='aitext',help='Replies back in an intelligent manner based on prompt')
+@bot.command(name='aitext',help='Calls the OpenAI text completion api with the user provided prompt.')
 async def aitext(ctx,text_prompt):
     d = {'command':'!aitext'}
     try:
@@ -145,6 +145,16 @@ async def aitext(ctx,text_prompt):
         logger.info(f"OpenAI error: {e}")
     logger.info(f'Command issued',extra=d)
 
+@bot.command(name='aiimage',help='Calls the OpenAI image generation api with the user provided prompt.')
+async def aiimage(ctx,text_prompt):
+    d = {'command':'!aiimage'}
+    try:
+        image_url = get_aiimage(text_prompt)
+        await ctx.send(image_url)
+    except Exception as e:
+        await ctx.send(f"There was an issue sending the request to openai. Error: :{e}")
+        logger.info(f"OpenAI error: {e}")
+    logger.info(f'Command issued',extra=d)
 
 @bot.command(name='rng',help='Returns a series of random numbers. !rng 3 1 6 returns 3 random numbers between 1 and 6')
 async def random_numbers(ctx,amount,min,max):
