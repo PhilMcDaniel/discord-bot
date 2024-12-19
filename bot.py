@@ -88,7 +88,7 @@ file_manager = FileContentManager()
 # Load the required files at startup
 file_manager.load_file("jokes.txt", lambda x: x.rstrip().replace('\\n', '\n'))
 file_manager.load_file("insults.txt")
-file_manager.load_file("lore.txt")
+file_manager.load_file("lore.txt")  # Could be used for your !lore command too
 
 
 # login
@@ -120,7 +120,8 @@ async def playcsgo(ctx):
 async def joke(ctx):
     d = {'command': '!joke'}
     try:
-        if response := file_manager.get_random_line("jokes.txt"):
+        response = file_manager.get_random_line("jokes.txt")
+        if response:
             await ctx.send(response)
             logger.info('Command issued', extra=d)
         else:
@@ -134,7 +135,8 @@ async def joke(ctx):
 async def poke(ctx, user):
     d = {'command': '!poke'}
     try:
-        if insult := file_manager.get_random_line("insults.txt"):
+        insult = file_manager.get_random_line("insults.txt")
+        if insult:
             response = f"{user} - {insult}"
             await ctx.send(response)
             logger.info('Command issued', extra=d)
@@ -145,12 +147,12 @@ async def poke(ctx, user):
         logger.error(f'Error in poke command: {e}', extra=d)
         await ctx.send("Sorry, I'm having trouble poking right now!")
 
-# Your !lore command could be updated to use the file manager too:
 @bot.command(name='lore', help="Reaches through the annals of the historical record to return significant moments.")
 async def lore(ctx):
     d = {'command': '!lore'}
     try:
-        for line in file_manager.get_all_lines("lore.txt"):
+        lines = file_manager.get_all_lines("lore.txt")
+        for line in lines:
             await ctx.send(line)
         logger.info('Command issued', extra=d)
     except Exception as e:
