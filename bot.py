@@ -12,11 +12,14 @@ from rlrankparser import form_url,get_rank_from_api
 import config
 from openai_functions import *
 
+# Get the directory containing the script
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # create logger so root is not used
 logger = logging.getLogger('bot')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-fh = logging.FileHandler('bot.log')
+fh = logging.FileHandler(os.path.join(BASE_DIR, 'bot.log'))
 fh.setLevel(logging.DEBUG)
 # create formatter and add it to the handlers
 #d stores key value extra data to log
@@ -29,7 +32,6 @@ logger.addHandler(fh)
 #disable/enable logging here
 logger.disabled = False
 
-
 getcontext().prec = 15
 
 #https://discord.com/developers/applications
@@ -41,10 +43,8 @@ intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-# At the top of your bot.py, after other imports
 class FileContentManager:
     def __init__(self):
-        # Dictionary to store different file contents
         self.content_cache = {}
         
     def load_file(self, filename, process_line=None):
@@ -60,16 +60,17 @@ class FileContentManager:
             bool: True if file was loaded successfully, False otherwise
         """
         try:
-            with open(filename, "r", encoding="utf8") as file:
+            # Convert relative filename to absolute path
+            filepath = os.path.join(BASE_DIR, filename)
+            with open(filepath, "r", encoding="utf8") as file:
                 if process_line is None:
-                    # Default processing: strip whitespace
                     process_line = lambda x: x.rstrip()
                 
                 self.content_cache[filename] = [process_line(line) for line in file]
                 return True
         except Exception as e:
-            logger.error(f"Error loading file {filename}: {e}")
-            self.content_cache[filename] = []  # Initialize empty if file can't be loaded
+            logger.error(f"Error loading file {filepath}: {e}")
+            self.content_cache[filename] = []
             return False
     
     def get_random_line(self, filename):
@@ -88,8 +89,7 @@ file_manager = FileContentManager()
 # Load the required files at startup
 file_manager.load_file("jokes.txt", lambda x: x.rstrip().replace('\\n', '\n'))
 file_manager.load_file("insults.txt")
-file_manager.load_file("lore.txt")  # Could be used for your !lore command too
-
+file_manager.load_file("lore.txt")
 
 # login
 @bot.event
@@ -162,7 +162,8 @@ async def lore(ctx):
 @bot.command(name='addtobot',help='EX: !addtobot "add your suggestion here" ')    
 async def addsugg(ctx,suggestion):
     d = {'command':'!suggestion'}
-    with open("suggestions.txt",'a') as file_object:
+    suggestions_path = os.path.join(BASE_DIR, "suggestions.txt")
+    with open(suggestions_path, 'a') as file_object:
         file_object.write(f"{suggestion}\n")
     await ctx.send(f"Suggestion added: {suggestion}")
     logger.info(f'Command issued',extra=d)
@@ -176,7 +177,6 @@ async def getrlrank(ctx,platform,platformid):
     for resp in resp_list:
         await ctx.send(resp)
     logger.info(f'Command issued',extra=d)
-
 
 @bot.command(name='aitext',help='Calls the OpenAI text completion api with the user provided prompt.')
 async def aitext(ctx,text_prompt):
@@ -244,6 +244,5 @@ async def on_message(message):
         await bot.process_commands(message)
     except Exception as e:
         logger.info(f"error in on_message, {e}")
-
 
 bot.run(TOKEN)
