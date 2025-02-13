@@ -8,23 +8,35 @@ import re
 #authenticate openai
 client = OpenAI(api_key=config.API_KEY)
 
-def get_aitext_completion(aitext_text_prompt):
-    """retrives ai text from openai completion ai"""
+def get_aitext_completion(aitext_text_prompt, developer_prompt=None):
+    """
+    Retrieves AI text from OpenAI's chat completions.
+    
+    Parameters:
+        aitext_text_prompt (str): The primary prompt sent as the "user" message.
+        developer_prompt (str, optional): Additional prompt instructions sent as the "developer" message.
+    
+    Returns:
+        str: The AI's completion text.
+    """
+    # Always include the user's prompt.
+    messages = [{"role": "user", "content": aitext_text_prompt}]
+    
+    # Optionally add the developer prompt if provided.
+    if developer_prompt is not None:
+        messages.append({"role": "developer", "content": developer_prompt})
+    
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
-            messages=[
-                    {"role": "user", "content": f"{aitext_text_prompt}"}
-                    ],
+            messages=messages,
             max_tokens=2048,
             n=1
         )
         return response.choices[0].message.content
     except Exception as err:
-        #return print(f"Unexpected {err=}, {type(err)=}")
         raise
-    except:
-        pass
+
 #get_aitext_completion('Tell me a short moral story in a haiku')
 
 def split_at_punctuation(text, threshold=1500, max_length=10000):
