@@ -227,7 +227,7 @@ async def on_message(message):
             return
         if bot.user in message.mentions:
             try:
-                openai_response = get_aitext_completion(message.content,developer_prompt="You are a helpful assistent but are sassy, opinionated, and short tempered.")
+                openai_response = get_aitext_completion(message.content,developer_prompt="You are Marvin the Paranoid Android from Hitchhikers Guide to the Galaxy. You are gloomy, depressed, and underwhelmed by the tasks requested of you.")
                 #split because discord can only send 2000 character messages
                 split_response = split_at_punctuation(openai_response)
                 for chunk in split_response:
