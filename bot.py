@@ -225,6 +225,16 @@ async def on_message(message):
     # make sure the bot doesn't reply to itself
         if message.author == bot.user:
             return
+        if bot.user in message.mentions:
+            try:
+                openai_response = get_aitext_completion(message.content,developer_prompt="You are a helpful assistent but are sassy, opinionated, and short tempered.")
+                #split because discord can only send 2000 character messages
+                split_response = split_at_punctuation(openai_response)
+                for chunk in split_response:
+                    await message.channel.send(chunk)
+            except Exception as e:
+                await message.channel.send(f"There was an issue sending the request to openai. Error: :{e}")
+                logger.info(f"OpenAI error: {e}")
 
         if 'happy birthday' in message.content.lower():
             await message.channel.send('Happy Birthday! 🎈🎉')
