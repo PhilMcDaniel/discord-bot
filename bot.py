@@ -6,9 +6,11 @@ from discord.ext import commands
 from decimal import *
 import logging
 import os
+from dotenv import load_dotenv
 
-import config
+load_dotenv()
 from openai_functions import *
+
 
 # Get the directory containing the script
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -35,7 +37,7 @@ getcontext().prec = 15
 #https://discord.com/developers/applications
 #https://discordpy.readthedocs.io/en/latest/api.html
 
-TOKEN = config.DISCORD_TOKEN
+TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
 

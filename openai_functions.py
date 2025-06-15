@@ -1,10 +1,13 @@
 from openai import OpenAI
-import config
-
+import os
 import re
 
+from dotenv import load_dotenv
+
+load_dotenv()
 #authenticate openai
-client = OpenAI(api_key=config.API_KEY)
+
+client = OpenAI()
 
 def get_aitext_completion(aitext_text_prompt, developer_prompt=None):
     """
