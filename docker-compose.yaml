@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  discord-bot:
+    build: .
+    container_name: discord-bot
+    environment:
+      # These will be loaded from .env file
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      # Persistent storage for logs and data files
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./jokes.txt:/app/jokes.txt:ro
+      - ./insults.txt:/app/insults.txt:ro
+      - ./lore.txt:/app/lore.txt:ro
+      # Mount suggestions.txt as read-write so bot can append to it
+      - ./suggestions.txt:/app/suggestions.txt
+    restart: unless-stopped
+    # Resource limits (optional but recommended)
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
