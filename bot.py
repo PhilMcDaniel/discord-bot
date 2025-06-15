@@ -3,12 +3,10 @@ import discord
 import datetime
 import random
 from discord.ext import commands
-import asyncio
 from decimal import *
 import logging
 import os
 
-from rlrankparser import form_url,get_rank_from_api
 import config
 from openai_functions import *
 
@@ -166,16 +164,6 @@ async def addsugg(ctx,suggestion):
     with open(suggestions_path, 'a') as file_object:
         file_object.write(f"{suggestion}\n")
     await ctx.send(f"Suggestion added: {suggestion}")
-    logger.info(f'Command issued',extra=d)
-
-@bot.command(name='rlrank',help='Returns Rocket League ranks. !rlrank platform platformid')
-async def getrlrank(ctx,platform,platformid):
-    d = {'command':'!rlrank'}
-    #store list of ratings from scraping in list
-    resp_list = get_rank_from_api(form_url(platform,platformid))
-    #send message for each rating
-    for resp in resp_list:
-        await ctx.send(resp)
     logger.info(f'Command issued',extra=d)
 
 @bot.command(name='aitext',help='Calls the OpenAI text completion api with the user provided prompt.')

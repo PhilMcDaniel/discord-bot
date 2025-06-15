@@ -1,7 +1,5 @@
 from openai import OpenAI
-import os
 import config
-import requests
 
 import re
 
